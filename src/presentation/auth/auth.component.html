@@ -1,1 +1,31 @@
-<p>auth works!</p>
+<div class="main-container">
+  <form
+    nz-form
+    [nzLayout]="'vertical'"
+    [formGroup]="validateForm"
+    (ngSubmit)="submitForm()"
+    [autocomplete]="false"
+  >
+    <nz-form-item>
+      <nz-form-label nzTooltipTitle="აუცილებელი ველია"> სახელი </nz-form-label>
+
+      <nz-form-control nzErrorTip="Please input your username!">
+        <input
+          tabindex="1"
+          nz-input
+          formControlName="userName"
+          placeholder="გთხოვთ შეიყვანოთ თქვენი სახელი"
+        />
+      </nz-form-control>
+    </nz-form-item>
+
+    <button
+      nz-button
+      class="login-form-button login-form-margin"
+      [nzType]="'primary'"
+      type="submit"
+    >
+      წავედით
+    </button>
+  </form>
+</div>
