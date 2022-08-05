@@ -121,10 +121,41 @@ export class DocEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngOnInit(): void {
+    function betterTab(cm: any) {
+      if (cm.somethingSelected()) {
+        cm.indentSelection('add');
+      } else {
+        cm.replaceSelection(
+          cm.getOption('indentWithTabs')
+            ? '\t'
+            : Array(cm.getOption('indentUnit') + 1).join(' '),
+          'end',
+          '+input'
+        );
+      }
+    }
+
     setTimeout(() => {
       this.codeEditor.codeMirror.on('change', (i, c) =>
         this.handleChange(i, c)
       );
+
+      this.codeEditor.codeMirror.addKeyMap({
+        Tab: (cm) => {
+          console.log('cm', cm);
+
+          if (cm.somethingSelected()) {
+            cm.indentSelection('add');
+            return;
+          }
+
+          //TODO if tab problem is solved return this comment pr remove this whole method
+          // if (true) cm.replaceSelection('\t', 'end', '+input');
+        },
+        'Shift-Tab': (cm) => {
+          cm.indentSelection('subtract');
+        },
+      });
     }, 0);
 
     const socket = this.socketService.connect();

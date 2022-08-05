@@ -22,7 +22,7 @@ export const getWidthOfText = (txt: string) => {
   el.style.fontFamily = 'monospace'; //! crucial
 
   // spaces
-  const realTextSize = txt.replace(/ /g, '+');
+  const realTextSize = txt.replace(/\t/g, '    ').replace(/ /g, '+');
 
   el.innerText = realTextSize;
 
