@@ -1,11 +1,13 @@
-import {AxiosError} from 'axios';
-import {consts} from "./consts";
+import { AxiosError } from 'axios';
+import { consts } from './consts';
 
 /**
  * rounds by 20 because thats height of each div in doc
  */
 export const roundHeight = (x: number) => {
-  return Math.ceil(x / consts.decoEditor.charHeight) * consts.decoEditor.charHeight;
+  return (
+    Math.ceil(x / consts.decoEditor.charHeight) * consts.decoEditor.charHeight
+  );
 };
 
 /**
@@ -18,7 +20,11 @@ export const getWidthOfText = (txt: string) => {
   el.style.pointerEvents = 'none';
   el.classList.add('cm-line');
   el.style.fontFamily = 'monospace'; //! crucial
-  el.innerText = txt;
+
+  // spaces
+  const realTextSize = txt.replace(/ /g, '+');
+
+  el.innerText = realTextSize;
 
   document.body.appendChild(el);
   const offsetWidth = el.offsetWidth;
@@ -26,7 +32,6 @@ export const getWidthOfText = (txt: string) => {
 
   return offsetWidth;
 };
-
 
 /**
  * self-explanatory
@@ -43,4 +48,3 @@ export const showErrorNotification = (error: any) => {
   //todo replace this with zoro message or find another package
   alert(errMessage);
 };
-

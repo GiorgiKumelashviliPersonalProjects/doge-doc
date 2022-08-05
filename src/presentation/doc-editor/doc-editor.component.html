@@ -39,11 +39,25 @@
     </ngx-codemirror>
 
     <ng-container *ngFor="let user of docSessionUsers | async">
-      <ng-container *ngIf="user.uuid !== cUser.uuid && cUser.top === 0 && cUser.currentLineText === ''">
-        <div style="position: fixed;z-index: 10"
-             [style.left]="toNumber(left, getWidthOfText(user.currentLineText), '-2') + 'px'"
-             [style.top]="toNumber(top, user.top, '1') + 'px'">
-          <app-doc-cursor [name]="user.username" [backgroundColor]="user.color"></app-doc-cursor>
+      <ng-container
+        *ngIf="
+          user.uuid !== cUser.uuid &&
+          cUser.top === 0 &&
+          cUser.currentLineText === '' &&
+          user.top < 620
+        "
+      >
+        <div
+          style="position: fixed; z-index: 10"
+          [style.left]="
+            toNumber(left, getWidthOfText(user.currentLineText), '-2') + 'px'
+          "
+          [style.top]="toNumber(top, user.top, '1') + 'px'"
+        >
+          <app-doc-cursor
+            [name]="user.username"
+            [backgroundColor]="user.color"
+          ></app-doc-cursor>
         </div>
       </ng-container>
     </ng-container>

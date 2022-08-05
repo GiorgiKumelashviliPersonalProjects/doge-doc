@@ -1,16 +1,22 @@
 import * as CodeMirror from 'codemirror';
 
-import {AfterViewInit, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {SocketService} from 'src/commons/socket';
-import {Select, Store} from '@ngxs/store';
-import {DocEditorActions} from './doc-editor.actions';
-import {AuthState} from '../auth/auth.state';
-import {consts} from 'src/commons/consts';
-import {DocEditorState} from './doc-editor.state';
-import {Observable} from 'rxjs';
-import {User} from 'src/models/state/user';
-import {NotifyUpdateCaret} from 'src/models/socket/notify-update-caret';
-import {getWidthOfText} from "../../commons/helper";
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { SocketService } from 'src/commons/socket';
+import { Select, Store } from '@ngxs/store';
+import { DocEditorActions } from './doc-editor.actions';
+import { AuthState } from '../auth/auth.state';
+import { consts } from 'src/commons/consts';
+import { DocEditorState } from './doc-editor.state';
+import { Observable } from 'rxjs';
+import { User } from 'src/models/state/user';
+import { NotifyUpdateCaret } from 'src/models/socket/notify-update-caret';
+import { getWidthOfText } from '../../commons/helper';
 
 @Component({
   selector: 'app-doc-editor',
@@ -23,7 +29,7 @@ export class DocEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   };
 
   @Select(AuthState.User)
-  currentUser: Observable<User>
+  currentUser: Observable<User>;
 
   @Select(DocEditorState.DocSessionContent)
   docSessionContent: Observable<string>;
@@ -34,8 +40,7 @@ export class DocEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   constructor(
     private readonly socketService: SocketService,
     private readonly store: Store
-  ) {
-  }
+  ) {}
 
   public options = {
     lineNumbers: false,
@@ -127,7 +132,6 @@ export class DocEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     socket.on(
       consts.socketEvents.notifyUpdate,
       (res: { content: string; uuid: string }) => {
-
         // update content
         this.store.dispatch(
           new DocEditorActions.UpdateDocSessionContent(res.content)
@@ -137,7 +141,6 @@ export class DocEditorComponent implements OnInit, OnDestroy, AfterViewInit {
 
     // add user and caret
     socket.on(consts.socketEvents.userAdded, (res: User) => {
-      console.log('added', res)
       this.store.dispatch(new DocEditorActions.UpdateUser(res, 'add'));
     });
 
@@ -150,6 +153,8 @@ export class DocEditorComponent implements OnInit, OnDestroy, AfterViewInit {
     socket.on(
       consts.socketEvents.notifyUpdateCaret,
       (res: NotifyUpdateCaret) => {
+        console.log(res);
+
         this.store.dispatch(new DocEditorActions.UpdateCaretPosition(res));
       }
     );
@@ -162,7 +167,7 @@ export class DocEditorComponent implements OnInit, OnDestroy, AfterViewInit {
   toNumber(...args: any[]) {
     return args.reduce((acc, cur) => {
       // console.log(cur);
-      return acc + parseInt(cur)
+      return acc + parseInt(cur);
     }, 0);
   }
 }
