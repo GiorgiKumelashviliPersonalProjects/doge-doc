@@ -1,4 +1,4 @@
-import { Action, State, StateContext, StateToken } from '@ngxs/store';
+import { Action, Selector, State, StateContext, StateToken } from '@ngxs/store';
 import { DocSession } from '../../models/state/doc-session';
 import { DocEditorActions } from './doc-editor.actions';
 import { http } from '../../commons/http';
@@ -90,8 +90,10 @@ export class DocEditorState {
     let newUsers: User[] = [];
 
     if (action.type === 'add') {
-      newUsers = ctx.getState().docSession?.users ?? [];
-      newUsers.push(action.user);
+      newUsers = [
+        ...ctx.getState().docSession?.users ?? [],
+        action.user
+      ];
     }
 
     if (action.type === 'del') {
@@ -103,5 +105,15 @@ export class DocEditorState {
     }
 
     ctx.setState(patch({ docSession: patch({ users: newUsers }) }));
+  }
+
+  @Selector([DocEditorStateToken])
+  public static DocSessionContent(state: DocEditorModel): string {
+    return state.docSession.content ?? '';
+  }
+
+  @Selector([DocEditorStateToken])
+  public static DocSessionUsers(state: DocEditorModel): User[] {
+    return state.docSession.users ?? [];
   }
 }

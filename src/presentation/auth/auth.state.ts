@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext, StateToken, Store } from '@ngxs/store';
+import {
+  Action,
+  Selector,
+  State,
+  StateContext,
+  StateToken,
+  Store,
+} from '@ngxs/store';
 import { AuthActions } from './auth.actions';
 import { http } from '../../commons/http';
 import { DocSession } from '../../models/state/doc-session';
@@ -9,7 +16,7 @@ import { DocEditorActions } from '../doc-editor/doc-editor.actions';
 
 export interface AuthStateModel {
   isAuth: boolean;
-  user: any;
+  user: User | null;
 }
 
 export const AuthStateToken = new StateToken<AuthStateModel>('auth');
@@ -18,7 +25,7 @@ export const AuthStateToken = new StateToken<AuthStateModel>('auth');
   name: AuthStateToken,
   defaults: {
     isAuth: false,
-    user: {},
+    user: null,
   },
 })
 @Injectable({ providedIn: 'root' })
@@ -43,9 +50,18 @@ export class AuthState {
         user: data.user,
         isAuth: true,
       });
-      console.log('final 0');
     } catch (error) {
       showErrorNotification(error);
     }
+  }
+
+  @Selector([AuthStateToken])
+  public static Uuid(state: AuthStateModel): string {
+    return state?.user?.uuid ?? '';
+  }
+
+  @Selector([AuthStateToken])
+  public static User(state: AuthStateModel): User | null {
+    return state?.user;
   }
 }

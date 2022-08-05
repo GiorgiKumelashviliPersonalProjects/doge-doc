@@ -25,6 +25,7 @@ import { CodemirrorModule } from '@ctrl/ngx-codemirror';
 
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { DocEditorCursorComponent } from './doc-editor/doc-editor-cursor.component';
 
 registerLocaleData(en);
 
@@ -34,7 +35,7 @@ export type StoreState = {
 };
 
 @NgModule({
-  declarations: [PresentationComponent, AuthComponent, DocEditorComponent],
+  declarations: [PresentationComponent, AuthComponent, DocEditorComponent, DocEditorCursorComponent],
   imports: [
     BrowserModule,
     RoutingModule,

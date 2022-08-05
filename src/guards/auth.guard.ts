@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  ActivatedRouteSnapshot,
-  CanActivate,
-  Router,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { CanActivate, Router, UrlTree } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { StoreState } from 'src/presentation/presentation.module';
@@ -16,16 +10,11 @@ import { StoreState } from 'src/presentation/presentation.module';
 export class AuthGuard implements CanActivate {
   constructor(private readonly store: Store, private readonly router: Router) {}
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ):
+  canActivate():
     | Observable<boolean | UrlTree>
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
-    return true;
-
     const isAuth = this.store.selectSnapshot<boolean>(
       (s: StoreState) => s.auth.isAuth
     );

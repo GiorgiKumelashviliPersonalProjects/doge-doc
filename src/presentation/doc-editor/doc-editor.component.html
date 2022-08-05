@@ -12,26 +12,40 @@
 >
 </ngx-codemirror> -->
 
-<nz-page-header
-  class="site-page-header"
-  nzTitle="Doge Doc"
-  nzSubtitle="New Document"
->
-  <nz-avatar
-    nz-page-header-avatar
-    nzSrc="/assets/icons/icons8-doge-96.png"
-    [nzSize]="50"
-  ></nz-avatar>
-</nz-page-header>
+<ng-container *ngIf="currentUser | async as cUser">
+  <nz-page-header
+    class="site-page-header"
+    nzTitle="Doge Doc"
+    nzSubtitle="New Document"
+  >
+    <nz-avatar
+      nz-page-header-avatar
+      nzSrc="/assets/icons/icons8-doge-96.png"
+      [nzSize]="50"
+    ></nz-avatar>
+  </nz-page-header>
 
-<div class="spacer"></div>
+  <div class="spacer"></div>
 
-<div class="ngx-codemirror custom-scrollbar">
-  <ngx-codemirror
-    [options]="options"
-    [ngModel]="defaults[mode]"
-    [disabled]="readOnly"
-    [autoFocus]="true"
-    (ngModelChange)="handleChange($event)"
-  ></ngx-codemirror>
-</div>
+  <div class="ngx-codemirror custom-scrollbar">
+    <ngx-codemirror
+      #CodeEditor
+      className="cm-editor"
+      [options]="options"
+      [ngModel]="docSessionContent | async"
+      [autoFocus]="true"
+      (cursorActivity)="handleCursorActivity()"
+    >
+    </ngx-codemirror>
+
+    <ng-container *ngFor="let user of docSessionUsers | async">
+      <ng-container *ngIf="user.uuid !== cUser.uuid && cUser.top === 0 && cUser.currentLineText === ''">
+        <div style="position: fixed;z-index: 10"
+             [style.left]="toNumber(left, getWidthOfText(user.currentLineText), '-2') + 'px'"
+             [style.top]="toNumber(top, user.top, '1') + 'px'">
+          <app-doc-cursor [name]="user.username" [backgroundColor]="user.color"></app-doc-cursor>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-container>

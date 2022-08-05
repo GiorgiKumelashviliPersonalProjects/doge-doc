@@ -1,19 +1,37 @@
-import {io, Socket} from 'socket.io-client';
-import {consts} from "./consts";
+import { Injectable } from '@angular/core';
+import { Store } from '@ngxs/store';
+import { io, Socket } from 'socket.io-client';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
+import { AuthState } from 'src/presentation/auth/auth.state';
+import { consts } from './consts';
 
-let socketInstance: Socket | null = null;
+@Injectable({ providedIn: 'root' })
+export class SocketService {
+  private static socketInstance: Socket | null = null;
 
-export default function getSocketInstance() {
-  const uuid = 'asdasdsadasdasds';
+  constructor(private readonly store: Store) {}
 
-  if (socketInstance == null) {
-    socketInstance = io(consts.backendApiUrlRoot, {
-      transports: ['websocket'],
-      timeout: 60000,
-      auth: cb => cb({uuid}),
-    });
+  public connect(): Socket<DefaultEventsMap, DefaultEventsMap> {
+    const uuid = this.store.selectSnapshot(AuthState.Uuid);
+
+    if (SocketService.socketInstance == null) {
+      SocketService.socketInstance = io(consts.backendApiUrlRoot, {
+        transports: ['websocket'],
+        timeout: 60000,
+        auth: (cb) => cb({ uuid }),
+      });
+    }
+
+    SocketService.socketInstance.connect();
+
+    return SocketService.socketInstance;
   }
 
-  return socketInstance;
-}
+  public getSocket(): Socket<DefaultEventsMap, DefaultEventsMap> | null {
+    if (SocketService.socketInstance) {
+      return SocketService.socketInstance;
+    }
 
+    return null;
+  }
+}
