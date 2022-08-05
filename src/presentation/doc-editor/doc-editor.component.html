@@ -1,5 +1,37 @@
-<p>doc-editor works!</p>
-
-<pre>
+<!-- <pre>
   {{ all$ | async | json }}
-</pre>
+</pre> -->
+
+<!-- <ngx-codemirror
+  [(ngModel)]="content"
+  [options]="{
+    lineNumbers: true,
+    theme: 'material',
+    mode: 'markdown'
+  }"
+>
+</ngx-codemirror> -->
+
+<nz-page-header
+  class="site-page-header"
+  nzTitle="Doge Doc"
+  nzSubtitle="New Document"
+>
+  <nz-avatar
+    nz-page-header-avatar
+    nzSrc="/assets/icons/icons8-doge-96.png"
+    [nzSize]="50"
+  ></nz-avatar>
+</nz-page-header>
+
+<div class="spacer"></div>
+
+<div class="ngx-codemirror custom-scrollbar">
+  <ngx-codemirror
+    [options]="options"
+    [ngModel]="defaults[mode]"
+    [disabled]="readOnly"
+    [autoFocus]="true"
+    (ngModelChange)="handleChange($event)"
+  ></ngx-codemirror>
+</div>

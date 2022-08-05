@@ -9,7 +9,7 @@ import { AuthActions } from './auth.actions';
   styleUrls: ['./auth.component.scss'],
 })
 export class AuthComponent implements OnInit {
-  validateForm!: FormGroup;
+  validateForm: FormGroup;
 
   constructor(
     private readonly fb: FormBuilder,

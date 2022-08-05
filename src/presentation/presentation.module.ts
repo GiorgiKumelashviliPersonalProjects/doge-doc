@@ -21,6 +21,10 @@ import { DocEditorComponent } from './doc-editor/doc-editor.component';
 import { NgxsModule } from '@ngxs/store';
 import { AuthState, AuthStateModel } from './auth/auth.state';
 import { DocEditorModel, DocEditorState } from './doc-editor/doc-editor.state';
+import { CodemirrorModule } from '@ctrl/ngx-codemirror';
+
+import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 
 registerLocaleData(en);
 
@@ -41,11 +45,14 @@ export type StoreState = {
     NzButtonModule,
     NzFormModule,
     NzInputModule,
+    NzPageHeaderModule,
+    NzAvatarModule,
 
     FormsModule,
     ReactiveFormsModule,
 
     NgxsModule.forRoot([AuthState, DocEditorState]),
+    CodemirrorModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [PresentationComponent],

@@ -1,5 +1,3 @@
-import {DocEditorType} from "../models/enums/doc-data.enum";
-
 export const consts = {
   title: 'Doge Doc',
   subTitle: 'New Document',
@@ -27,14 +25,3 @@ export const consts = {
     distributeChange: 'distribute_change',
   },
 };
-
-//todo
-//  descendant type is missing
-//  export const docEditorStateDefaultValue: Descendant[] = [
-export const docEditorStateDefaultValue: any[] = [
-  {
-    type: DocEditorType.PARAGRAPH,
-    children: [{text: 'Start typing...'}],
-  },
-];
-
